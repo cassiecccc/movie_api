@@ -3,7 +3,66 @@ const express = require("express"),
 fs = require("fs");
 path = require("path");
 
+let topMovies = [
+  {
+    title: "Se7en",
+    director: "David Fincher",
+  },
+  {
+    title: "Pulp Fiction",
+    director: "Quentin Tarantino",
+  },
+  {
+    title: "Reservoir Dogs",
+    director: "Quentin Tarantino",
+  },
+  {
+    title: "Fight Club",
+    director: "David Fincher",
+  },
+  {
+    title: "Her",
+    director: "Spike Jonze",
+  },
+  {
+    title: "Catch Me If You Can",
+    director: "Steven Spielberg",
+  },
+  {
+    title: "Identity",
+    director: "James Mangold",
+  },
+  {
+    title: "Shutter Island",
+    director: "Martin Scorsese",
+  },
+  {
+    title: "A Beautiful Mind",
+    director: "Ron Howard",
+  },
+  {
+    title: "The Legend of 1900",
+    director: "Giuseppe Tornatore",
+  },
+  {
+    title: "The Best Offer",
+    director: "Giuseppe Tornatore",
+  },
+  {
+    title: "Cinema Paradiso",
+    director: "Giuseppe Tornatore",
+  },
+  {
+    title: "The Invisible Guest",
+    director: "Oriol Paulo",
+  },
+  {
+    title: "American Psycho",
+    director: "Mary Harron",
+  },
+];
 const app = express();
+
 const accessLogStream = fs.createWriteStream(path.join(__dirname, "log.txt"), {
   flags: "a",
 });
@@ -16,7 +75,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/movies", (req, res) => {
-  res.json();
+  res.json(topMovies);
 });
 
 //error handling
