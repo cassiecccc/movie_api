@@ -4,14 +4,149 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles.css" />
     <title>myFlix API</title>
   </head>
+  <style>
+    table {
+      border-collapse: collapse;
+    }
+
+    th {
+      font-weight: 400;
+      padding: 10px;
+      border: 1px solid black;
+    }
+
+    .thead {
+      font-weight: 700;
+    }
+  </style>
   <body>
+    <h1>Description</h1>
     <p>
       The web application will provide users with access to information about
       different movies, directors, and genres. Users will be able to sign up,
       update their personal information, and create a list of their favorite
       movies.
     </p>
+    <h2>Endpoints</h2>
+    <table>
+      <thead>
+        <tr>
+          <th class="thead">Request</th>
+          <th class="thead">URL</th>
+          <th class="thead">HTTP Method</th>
+          <th class="thead">Response</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>Return a list of ALL movies to the user</th>
+          <th>/movies</th>
+          <th>GET</th>
+          <th>A JSON object holding data about all the movies</th>
+        </tr>
+
+        <tr>
+          <th>
+            Return data (description, genre, director, image URL, whether it’s
+            featured or not) about a single movie by title to the user
+          </th>
+          <th>/movies/:title</th>
+          <th>GET</th>
+          <th>
+            A JSON object holding data about the movie which name user entered;
+            example: { Title: "Avatar", }
+          </th>
+        </tr>
+
+        <tr>
+          <th>
+            Return data about a genre (description) by name/title (e.g.,
+            “Thriller”)
+          </th>
+          <th>/movies/genre/:genreName</th>
+          <th>GET</th>
+          <th>
+            A JSON object holding data about movies in the genre; example: {
+            Genre: { Name: "Fantasy", Description: "fantasy, also spelled
+            phantasy, imaginative fiction dependent for effect on strangeness of
+            setting (such as other worlds or times) and of characters (such as
+            supernatural or unnatural beings).", },}
+          </th>
+        </tr>
+
+        <tr>
+          <th>
+            Return data about a director (bio, birth year, death year) by name
+          </th>
+          <th>/movies/director/:directorName</th>
+          <th>GET</th>
+          <th>
+            A JSON object holding data about the movie's name and its director's
+            info; example: { Director: { Name: "James Cameron", Bio: "James
+            Francis Cameron CC (born August 16, 1954) is a Canadian filmmaker. A
+            major figure in the post-New Hollywood era, he is considered one of
+            the industry's most innovative filmmakers, regularly pushing the
+            boundaries of cinematic capability with his use of novel
+            technologies. He first gained recognition for writing and directing
+            The Terminator (1984) and found further success with Aliens (1986),
+            The Abyss (1989), Terminator 2: Judgment Day (1991), and the action
+            comedy True Lies (1994). He wrote and directed Titanic (1997),
+            Avatar (2009) and its sequels, with Titanic earning him Academy
+            Awards for Best Picture, Best Director and Best Film Editing. A
+            recipient of various other industry accolades, two of his films have
+            been selected for preservation in the National Film Registry by the
+            Library of Congress.", }, }
+          </th>
+        </tr>
+
+        <tr>
+          <th>Allow new users to register</th>
+          <th>/users</th>
+          <th>POST</th>
+          <th>
+            A JSON object holding data about the user that was added, including
+            an ID; example: { id: 1, name: "Cassie", favoriteMovies:
+            ["Interstellar"], },
+          </th>
+        </tr>
+
+        <tr>
+          <th>Allow users to update their user info (username)</th>
+          <th>/users/:id</th>
+          <th>PUT</th>
+          <th>A text message indicating the username was updated</th>
+        </tr>
+
+        <tr>
+          <th>Allow users to add a movie to their list of favorites</th>
+          <th>/users/:id/:movieTitle</th>
+          <th>PUT</th>
+          <th>
+            A text message indicating the movie was added to the username's
+            favorites
+          </th>
+        </tr>
+
+        <tr>
+          <th>Allow users to remove a movie from their list of favorites</th>
+          <th>/users/:id/:movieTitle</th>
+          <th>DELETE</th>
+          <th>
+            A text message indicating the movie was removed from the username's
+            favorites
+          </th>
+        </tr>
+
+        <tr>
+          <th>Allow existing users to deregister</th>
+          <th>/users/:id</th>
+          <th>DELETE</th>
+          <th>A text message indicating the user email has been removed</th>
+        </tr>
+      </tbody>
+    </table>
   </body>
 </html>
