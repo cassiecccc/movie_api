@@ -46,15 +46,27 @@ app.post("/users", (req, res) => {
           .then((user) => {
             res.status(201).json(user);
           })
-          .catch((error) => {
-            console.error(error);
+          .catch((err) => {
+            console.error(err);
             res.status(500).send("Error: " + error);
           });
       }
     })
-    .catch((error) => {
-      console.error(error);
+    .catch((err) => {
+      console.error(err);
       res.status(500).send("Error: " + error);
+    });
+});
+
+//get one user
+app.get("/users/:Username", (req, res) => {
+  Users.findOne({ Username: req.params.Username })
+    .then((user) => {
+      res.status(200).json(user);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
     });
 });
 
@@ -70,18 +82,16 @@ app.put("/users/:Username", (req, res) => {
         Birthday: req.body.Birthday,
       },
     },
-    { new: true },
-    (err, updatedUser) => {
-      if (err) {
-        console.error(err);
-        res.status(500).send("Error: " + err);
-      } else {
-        res.json(updatedUser);
-      }
-    }
-  );
+    { new: true }
+  )
+    .then((user) => {
+      res.status(200).json(user);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
 });
-
 //update favorite movie || Update
 app.post("/users/:Username/movies/:MovieID", (req, res) => {
   Users.findOneAndUpdate(
@@ -89,16 +99,15 @@ app.post("/users/:Username/movies/:MovieID", (req, res) => {
     {
       $push: { FavoriteMovies: req.params.MovieID },
     },
-    { new: true },
-    (err, updatedUser) => {
-      if (err) {
-        console.error(err);
-        res.status(500).send("Error: " + err);
-      } else {
-        res.json(updatedUser);
-      }
-    }
-  );
+    { new: true }
+  )
+    .then((user) => {
+      res.status(200).json(user);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
 });
 
 //delete favorite movie || Delete
@@ -108,16 +117,15 @@ app.delete("/users/:Username/movies/:MovieID", (req, res) => {
     {
       $pull: { FavoriteMovies: req.params.MovieID },
     },
-    { new: true },
-    (err, updatedUser) => {
-      if (err) {
-        console.error(err);
-        res.status(500).send("Error: " + err);
-      } else {
-        res.json(updatedUser);
-      }
-    }
-  );
+    { new: true }
+  )
+    .then((user) => {
+      res.status(200).json(user);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
 });
 
 //deregister
@@ -139,48 +147,53 @@ app.delete("/users/:Username", (req, res) => {
 //return a list of movie || Read
 
 app.get("/movies", (req, res) => {
-  res.status(200).json(movies);
+  Movies.find()
+    .then((movies) => {
+      res.status(200).json(movies);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
 });
 
 //return a single movie || Read
 
-app.get("/movies/:title", (req, res) => {
-  // const title = req.params.title; common form below;
-  const { title } = req.params;
-  const movie = movies.find((movie) => movie.Title === title);
-  if (movie) {
-    res.status(200).json(movie);
-  } else {
-    res.status(400).send("no such movie");
-  }
+app.get("/movies/:Title", (req, res) => {
+  Movies.findOne({ Title: req.params.Title })
+    .then((movie) => {
+      res.status(200).json(movie);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
 });
 
 //return genre || Read
 
 app.get("/movies/genre/:genreName", (req, res) => {
-  // const title = req.params.title; common form below;
-  const { genreName } = req.params;
-  const genre = movies.find((movie) => movie.Genre.Name === genreName).Genre;
-  if (genre) {
-    res.status(200).json(genre);
-  } else {
-    res.status(400).send("no such genre");
-  }
+  Movies.findOne({ "Genre.Name": req.params.genreName })
+    .then((movie) => {
+      res.json(movie.Genre);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
 });
 
 //return director || Read
 
 app.get("/movies/directors/:directorName", (req, res) => {
-  // const title = req.params.title; common form below;
-  const { directorName } = req.params;
-  const director = movies.find(
-    (movie) => movie.Director.Name === directorName
-  ).Director;
-  if (director) {
-    res.status(200).json(director);
-  } else {
-    res.status(400).send("no such director");
-  }
+  Movies.findOne({ "Director.Name": req.params.directorName })
+    .then((movie) => {
+      res.json(movie.Director);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
 });
 
 //error handling
