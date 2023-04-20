@@ -114,37 +114,31 @@
         </tr>
 
         <tr>
-          <th>Allow users to update their user info (username)</th>
-          <th>/users/:id</th>
+          <th>Allow users to update their user info</th>
+          <th>/users/:Username</th>
           <th>PUT</th>
-          <th>A text message indicating the username was updated</th>
+          <th>A JSON object holding the updated userinfo</th>
         </tr>
 
         <tr>
           <th>Allow users to add a movie to their list of favorites</th>
-          <th>/users/:id/:movieTitle</th>
-          <th>PUT</th>
-          <th>
-            A text message indicating the movie was added to the username's
-            favorites
-          </th>
+          <th>/users/:Username/movies/:MovieID</th>
+          <th>POST</th>
+          <th>A JSON object holding the updated userinfo</th>
         </tr>
 
         <tr>
           <th>Allow users to remove a movie from their list of favorites</th>
-          <th>/users/:id/:movieTitle</th>
+          <th>/users/:Username/movies/:MovieID</th>
           <th>DELETE</th>
-          <th>
-            A text message indicating the movie was removed from the username's
-            favorites
-          </th>
+          <th>A JSON object holding the updated userinfo</th>
         </tr>
 
         <tr>
           <th>Allow existing users to deregister</th>
-          <th>/users/:id</th>
+          <th>/users/:Username</th>
           <th>DELETE</th>
-          <th>A text message indicating the user email has been removed</th>
+          <th>A message indicating the user has been deleted</th>
         </tr>
       </tbody>
     </table>
