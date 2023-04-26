@@ -21,7 +21,6 @@ passport.use(
           callback(null, false, { message: "Incorrect username or password" })
         );
       console.log("finished");
-      return callback(null, user);
     }
   )
 );
