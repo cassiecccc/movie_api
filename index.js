@@ -234,8 +234,7 @@ app.delete(
 //return a list of movie || Read
 
 app.get("/movies", (req, res) => {
-  movies
-    .find()
+  Movies.find()
     .then((movies) => {
       res.status(200).json(movies);
     })
@@ -246,8 +245,7 @@ app.get("/movies", (req, res) => {
 });
 
 app.get("/users", (req, res) => {
-  users
-    .find()
+  Users.find()
     .then((users) => {
       res.status(200).json(users);
     })
