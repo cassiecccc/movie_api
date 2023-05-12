@@ -52,7 +52,7 @@ const { check, validationResult } = require("express-validator");
 // });
 
 mongoose.connect(
-  "mongodb+srv://myFlixDBadmin:myFlixDBadmin@cluster0.vejeyvd.mongodb.net/?retryWrites=true&w=majority",
+  "mongodb+srv://myFlixDBadmin:123456@cluster0.vejeyvd.mongodb.net/?retryWrites=true&w=majority",
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
