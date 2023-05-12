@@ -51,6 +51,14 @@ const { check, validationResult } = require("express-validator");
 //   useUnifiedTopology: true,
 // });
 
+mongoose.connect(
+  "mongodb+srv://myFlixDBadmin:myFlixDBadmin@cluster0.vejeyvd.mongodb.net/?retryWrites=true&w=majority",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+);
+
 app.use(morgan("combined", { stream: accessLogStream }));
 
 app.use(morgan("common"));
