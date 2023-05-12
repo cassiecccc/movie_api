@@ -4,10 +4,10 @@ const Models = require("./model.js");
 const Movies = Models.Movie;
 const Users = Models.User;
 
-mongoose.connect(process.env.CONNECTION_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+// mongoose.connect(process.env.CONNECTION_URI, {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// });
 
 const express = require("express"),
   morgan = require("morgan"),
@@ -51,13 +51,13 @@ const { check, validationResult } = require("express-validator");
 //   useUnifiedTopology: true,
 // });
 
-// mongoose.connect(
-//   "mongodb+srv://myFlixDBadmin:Sn5ALhght7IVS0a7@cluster0.vejeyvd.mongodb.net/?retryWrites=true&w=majority",
-//   {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//   }
-// );
+mongoose.connect(
+  "mongodb+srv://myFlixDBadmin:Sn5ALhght7IVS0a7@cluster0.vejeyvd.mongodb.net/?retryWrites=true&w=majority",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+);
 
 app.use(morgan("combined", { stream: accessLogStream }));
 
