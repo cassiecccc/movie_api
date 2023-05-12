@@ -234,9 +234,22 @@ app.delete(
 //return a list of movie || Read
 
 app.get("/movies", (req, res) => {
-  Movies.find()
+  movies
+    .find()
     .then((movies) => {
       res.status(200).json(movies);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
+});
+
+app.get("/users", (req, res) => {
+  users
+    .find()
+    .then((users) => {
+      res.status(200).json(users);
     })
     .catch((err) => {
       console.error(err);
