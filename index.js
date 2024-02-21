@@ -45,18 +45,18 @@ const passport = require("passport");
 require("./passport");
 const { check, validationResult } = require("express-validator");
 
-// mongoose.connect(process.env.CONNECTION_URI, {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// });
+mongoose.connect(process.env.CONNECTION_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
-mongoose.connect(
-  "mongodb+srv://myFlixDBadmin:3niCrxlifBcsXE7U@cluster0.vejeyvd.mongodb.net/myFlixDB?retryWrites=true&w=majority&appName=Cluster0",
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }
-);
+// mongoose.connect(
+//   "mongodb+srv://myFlixDBadmin:3niCrxlifBcsXE7U@cluster0.vejeyvd.mongodb.net/myFlixDB?retryWrites=true&w=majority&appName=Cluster0",
+//   {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   }
+// );
 
 app.use(morgan("combined", { stream: accessLogStream }));
 
