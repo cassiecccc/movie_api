@@ -11,24 +11,6 @@ const express = require("express"),
   fs = require("fs"),
   path = require("path");
 
-// const dbConnection = async () => {
-//   try {
-//     await mongoose.connect(
-//       "mongodb+srv://myFlixDBadmin:3niCrxlifBcsXE7U@cluster0.vejeyvd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-//     );
-//     console.log("initial db connection successful");
-//   } catch (e) {
-//     console.log(e);
-//   }
-// };
-
-// dbConnection();
-
-mongoose.connect(process.env.CONNECTION_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -63,6 +45,11 @@ const passport = require("passport");
 require("./passport");
 const { check, validationResult } = require("express-validator");
 
+mongoose.connect(process.env.CONNECTION_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
 app.use(morgan("combined", { stream: accessLogStream }));
 
 app.use(morgan("common"));
@@ -83,13 +70,13 @@ app.post(
     check("Password", "Password is required").not().isEmpty(),
     check("Email", "Email does not appear to be valid").isEmail(),
   ],
-  async (req, res) => {
+  (req, res) => {
     let errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
     }
     let hashedPassword = Users.hashPassword(req.body.Password);
-    await Users.findOne({ Username: req.body.Username })
+    Users.findOne({ Username: req.body.Username })
       .then((user) => {
         if (user) {
           return res.status(400).send(req.body.Username + "already exists");
@@ -252,17 +239,15 @@ app.get(
   }
 );
 
+//return a single movie || Read
+
 app.get(
   "/movies/:Title",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Movies.findOne({ Title: req.params.Title })
       .then((movie) => {
-        if (!movie) {
-          return res.status(404).send("Movie not found");
-        } else {
-          res.status(200).json(movie);
-        }
+        res.status(200).json(movie);
       })
       .catch((err) => {
         console.error(err);
@@ -277,18 +262,13 @@ app.get(
   "/movies/genre/:genreName",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    const { genreName } = req.params;
-    console.log(genreName);
-    Movies.findOne({ "Genre.Name": genreName })
+    Movies.findOne({ "Genre.Name": req.params.genreName })
       .then((movie) => {
-        if (!movie) {
-          res.status(404).send("Genre not found");
-        }
         res.json(movie.Genre);
       })
       .catch((err) => {
-        res.status(500).send("Error: " + err);
         console.error(err);
+        res.status(500).send("Error: " + err);
       });
   }
 );
@@ -301,9 +281,6 @@ app.get(
   (req, res) => {
     Movies.findOne({ "Director.Name": req.params.directorName })
       .then((movie) => {
-        if (!movie) {
-          res.status(404).send("Director not found");
-        }
         res.json(movie.Director);
       })
       .catch((err) => {
@@ -312,8 +289,6 @@ app.get(
       });
   }
 );
-
-//return a single movie || Read
 
 //error handling
 
@@ -325,7 +300,6 @@ app.use((err, req, res, next) => {
 app.use("/documentation", express.static("public/documentation.html"));
 
 const port = process.env.PORT || 8080;
-
 app.listen(port, "0.0.0.0", () => {
   console.log("Listening on Port " + port);
 });
