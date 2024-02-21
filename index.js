@@ -17,7 +17,7 @@ const express = require("express"),
 
 const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/myFlixDB";
 
-const connectMongo = async () => {
+const dbConnection = async () => {
   try {
     await mongoose.connect(dbUrl);
   } catch (e) {
@@ -25,7 +25,7 @@ const connectMongo = async () => {
   }
 };
 
-connectMongo();
+dbConnection();
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -72,22 +72,22 @@ app.get("/", (req, res) => {
 //new user register || Create
 app.post(
   "/users",
-  // [
-  //   check("Username", "Username is required").isLength({ min: 5 }),
-  //   check(
-  //     "Username",
-  //     "Username contains non alphanumeric characters - not allowed."
-  //   ).isAlphanumeric(),
-  //   check("Password", "Password is required").not().isEmpty(),
-  //   check("Email", "Email does not appear to be valid").isEmail(),
-  // ],
-  (req, res) => {
-    // let errors = validationResult(req);
-    // if (!errors.isEmpty()) {
-    //   return res.status(422).json({ errors: errors.array() });
-    // }
-    // let hashedPassword = Users.hashPassword(req.body.Password);
-    Users.findOne({ Username: req.body.Username })
+  [
+    check("Username", "Username is required").isLength({ min: 5 }),
+    check(
+      "Username",
+      "Username contains non alphanumeric characters - not allowed."
+    ).isAlphanumeric(),
+    check("Password", "Password is required").not().isEmpty(),
+    check("Email", "Email does not appear to be valid").isEmail(),
+  ],
+  async (req, res) => {
+    let errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+    let hashedPassword = Users.hashPassword(req.body.Password);
+    await Users.findOne({ Username: req.body.Username })
       .then((user) => {
         if (user) {
           return res.status(400).send(req.body.Username + "already exists");
@@ -323,6 +323,7 @@ app.use((err, req, res, next) => {
 app.use("/documentation", express.static("public/documentation.html"));
 
 const port = process.env.PORT || 8080;
-app.listen(port, "0.0.0.0", () => {
+
+app.listen(port, "0,0,0,0", () => {
   console.log("Listening on Port " + port);
 });
