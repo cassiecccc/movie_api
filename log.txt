@@ -485,3 +485,5 @@ Timestamp: Tue Apr 04 2023 18:14:38 GMT-0400 (Eastern Daylight Time)
 127.0.0.1 - - [21/Feb/2024:20:03:51 +0000] "GET /movies/directors HTTP/1.1" 404 15 "-" "PostmanRuntime/7.36.1"
 127.0.0.1 - - [21/Feb/2024:20:04:26 +0000] "GET /movies/ HTTP/1.1" 200 2 "-" "PostmanRuntime/7.36.1"
 127.0.0.1 - - [21/Feb/2024:20:04:29 +0000] "GET /movies/ HTTP/1.1" 401 - "-" "PostmanRuntime/7.36.1"
+::1 - - [21/Feb/2024:20:34:12 +0000] "GET / HTTP/1.1" 304 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36"
+::1 - - [21/Feb/2024:20:34:21 +0000] "GET /movies HTTP/1.1" 401 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36"

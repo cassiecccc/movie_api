@@ -1,7 +1,3 @@
-if (process.env.NODE_ENV !== "production") {
-  require("dotenv").config();
-}
-
 const mongoose = require("mongoose");
 const Models = require("./model.js");
 
@@ -15,13 +11,12 @@ const express = require("express"),
   fs = require("fs"),
   path = require("path");
 
-const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/myFlixDB";
-
 const dbConnection = async () => {
   try {
-    await mongoose.connect(dbUrl);
+    await mongoose.connect(process.env.DB_URL);
+    console.log("initial db connection successful");
   } catch (e) {
-    console.log(e);
+    handleError(e);
   }
 };
 
