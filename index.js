@@ -11,16 +11,23 @@ const express = require("express"),
   fs = require("fs"),
   path = require("path");
 
-const dbConnection = async () => {
-  try {
-    await mongoose.connect(process.env.DB_URL);
-    console.log("initial db connection successful");
-  } catch (e) {
-    handleError(e);
-  }
-};
+// const dbConnection = async () => {
+//   try {
+//     await mongoose.connect(
+//       "mongodb+srv://myFlixDBadmin:3niCrxlifBcsXE7U@cluster0.vejeyvd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+//     );
+//     console.log("initial db connection successful");
+//   } catch (e) {
+//     console.log(e);
+//   }
+// };
 
-dbConnection();
+// dbConnection();
+
+mongoose.connect(process.env.CONNECTION_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -319,6 +326,6 @@ app.use("/documentation", express.static("public/documentation.html"));
 
 const port = process.env.PORT || 8080;
 
-app.listen(port, () => {
+app.listen(port, "0.0.0.0", () => {
   console.log("Listening on Port " + port);
 });
