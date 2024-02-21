@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
+
 const mongoose = require("mongoose");
 const Models = require("./model.js");
 
@@ -10,6 +14,18 @@ const express = require("express"),
   bodyParser = require("body-parser"),
   fs = require("fs"),
   path = require("path");
+
+const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/myFlixDB";
+
+const connectMongo = async () => {
+  try {
+    await mongoose.connect(dbUrl);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+connectMongo();
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -44,24 +60,6 @@ let auth = require("./auth")(app);
 const passport = require("passport");
 require("./passport");
 const { check, validationResult } = require("express-validator");
-
-// mongoose.connect("mongodb://localhost:27017/myFlixDB", {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// });
-
-// mongoose.connect(
-//   "mongodb+srv://myFlixDBadmin:Sn5ALhght7IVS0a7@cluster0.vejeyvd.mongodb.net/myFlixDB?retryWrites=true&w=majority",
-//   {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//   }
-// );
-
-mongoose.connect(process.env.CONNECTION_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
 
 app.use(morgan("combined", { stream: accessLogStream }));
 
@@ -239,11 +237,53 @@ app.delete(
 
 app.get(
   "/movies",
-  // passport.authenticate("jwt", { session: false }),
+  passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Movies.find()
       .then((movies) => {
         res.status(200).json(movies);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send("Error: " + err);
+      });
+  }
+);
+
+//return genre || Read
+
+app.get(
+  "/movies/genre/:genreName",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { genreName } = req.params;
+    console.log(genreName);
+    Movies.findOne({ "Genre.Name": genreName })
+      .then((movie) => {
+        if (!movie) {
+          res.status(404).send("Genre not found");
+        }
+        res.json(movie.Genre);
+      })
+      .catch((err) => {
+        res.status(500).send("Error: " + err);
+        console.error(err);
+      });
+  }
+);
+
+//return director || Read
+
+app.get(
+  "/movies/directors/:directorName",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Movies.findOne({ "Director.Name": req.params.directorName })
+      .then((movie) => {
+        if (!movie) {
+          res.status(404).send("Director not found");
+        }
+        res.json(movie.Director);
       })
       .catch((err) => {
         console.error(err);
@@ -260,41 +300,11 @@ app.get(
   (req, res) => {
     Movies.findOne({ Title: req.params.Title })
       .then((movie) => {
-        res.status(200).json(movie);
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send("Error: " + err);
-      });
-  }
-);
-
-//return genre || Read
-
-app.get(
-  "/movies/genre/:genreName",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    Movies.findOne({ "Genre.Name": req.params.genreName })
-      .then((movie) => {
-        res.json(movie.Genre);
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send("Error: " + err);
-      });
-  }
-);
-
-//return director || Read
-
-app.get(
-  "/movies/directors/:directorName",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    Movies.findOne({ "Director.Name": req.params.directorName })
-      .then((movie) => {
-        res.json(movie.Director);
+        if (!movie) {
+          return res.status(404).send("Movie not found");
+        } else {
+          res.status(200).json(movie);
+        }
       })
       .catch((err) => {
         console.error(err);
