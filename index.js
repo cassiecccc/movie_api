@@ -250,6 +250,25 @@ app.get(
   }
 );
 
+app.get(
+  "/movies/:Title",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Movies.findOne({ Title: req.params.Title })
+      .then((movie) => {
+        if (!movie) {
+          return res.status(404).send("Movie not found");
+        } else {
+          res.status(200).json(movie);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send("Error: " + err);
+      });
+  }
+);
+
 //return genre || Read
 
 app.get(
@@ -293,25 +312,6 @@ app.get(
 );
 
 //return a single movie || Read
-
-app.get(
-  "/movies/:Title",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    Movies.findOne({ Title: req.params.Title })
-      .then((movie) => {
-        if (!movie) {
-          return res.status(404).send("Movie not found");
-        } else {
-          res.status(200).json(movie);
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send("Error: " + err);
-      });
-  }
-);
 
 //error handling
 
