@@ -13,14 +13,31 @@ passport.use(
       usernameField: "Username",
       passwordField: "Password",
     },
-    (username, password, callback) => {
+    async (username, password, callback) => {
       console.log(username + " " + password);
-      Users.findOne({ Username: username })
-        .then((user) => callback(null, user))
-        .catch((e) =>
-          callback(null, false, { message: "Incorrect username or password" })
-        );
-      console.log("finished");
+      await Users.findOne({ Username: username })
+        .then((user) => {
+          if (!user) {
+            console.log("Incorrect Username");
+            return callback(null, false, {
+              message: "Incorrect username or password",
+            });
+          }
+          if (!user.validatePassword(password)) {
+            console.log("incorrect password");
+            return callback(null, false, {
+              message: "Incorrect username or password",
+            });
+          }
+          console.log("finished");
+          return callback(null, user);
+        })
+        .catch((e) => {
+          if (e) {
+            console.log(e);
+            return callback(e);
+          }
+        });
     }
   )
 );
@@ -31,8 +48,8 @@ passport.use(
       jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
       secretOrKey: "your_jwt_secret",
     },
-    (jwtPayload, callback) => {
-      return Users.findById(jwtPayload._id)
+    async (jwtPayload, callback) => {
+      return await Users.findById(jwtPayload._id)
         .then((user) => {
           return callback(null, user);
         })
