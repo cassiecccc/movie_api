@@ -164,6 +164,7 @@ app.post(
     )
       .then((user) => {
         res.status(200).json(user);
+        console.log(user);
       })
       .catch((err) => {
         console.error(err);
