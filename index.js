@@ -50,14 +50,6 @@ mongoose.connect(process.env.CONNECTION_URI, {
   useUnifiedTopology: true,
 });
 
-// mongoose.connect(
-//   "mongodb+srv://myFlixDBadmin:3niCrxlifBcsXE7U@cluster0.vejeyvd.mongodb.net/myFlixDB?retryWrites=true&w=majority&appName=Cluster0",
-//   {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//   }
-// );
-
 app.use(morgan("combined", { stream: accessLogStream }));
 
 app.use(morgan("common"));
@@ -91,7 +83,7 @@ app.post(
         } else {
           Users.create({
             Username: req.body.Username,
-            Password: req.body.Password,
+            Password: hashedPassword,
             Email: req.body.Email,
             Birthday: req.body.Birthday,
           })
@@ -131,34 +123,26 @@ app.get(
 app.put(
   "/users/:Username",
   passport.authenticate("jwt", { session: false }),
-  [
-    check("username", "Username is required.").isLength({ min: 5 }),
-    check(
-      "username",
-      "Username contains non-alphanumeric characters - not allowed."
-    ).isAlphanumeric(),
-    check("password", "Password is required.").not().isEmpty(),
-    check("email", "Email does not appear to be valid.").isEmail(),
-  ],
   async (req, res) => {
-    let errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: errors.array() });
+    if (req.user.Username !== req.params.Username) {
+      return res.status(400).send("Permission denied");
     }
+    console.log(req.body);
+    let hashedPassword = Users.hashPassword(req.body.Password);
     await Users.findOneAndUpdate(
       { Username: req.params.Username },
       {
         $set: {
           Username: req.body.Username,
-          Password: req.body.Password,
+          Password: hashedPassword,
           Email: req.body.Email,
           Birthday: req.body.Birthday,
         },
       },
       { new: true }
     )
-      .then((user) => {
-        res.status(200).json(user);
+      .then((updateUser) => {
+        res.json(updateUser);
       })
       .catch((err) => {
         console.error(err);
