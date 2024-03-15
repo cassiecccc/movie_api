@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const mongoose = require("mongoose");
 const Models = require("./model.js");
 
@@ -20,11 +22,14 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, "log.txt"), {
 });
 
 const cors = require("cors");
+// app.use(cors());
+
 let allowedOrigins = [
-  "http://localhost:8080",
+  "http://localhost:8080/",
   "http://testsite.com",
-  "http://localhost:1234",
+  "http://localhost:1234/",
 ];
+
 app.use(
   cors({
     origin: (origin, callback) => {
@@ -163,7 +168,7 @@ app.post(
       { new: true }
     )
       .then((user) => {
-        res.status(200).json(user);
+        res.send(user);
         console.log(user);
       })
       .catch((err) => {
