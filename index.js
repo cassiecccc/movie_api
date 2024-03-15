@@ -168,7 +168,7 @@ app.post(
       { new: true }
     )
       .then((user) => {
-        res.send(user);
+        res.json(user);
         console.log(user);
       })
       .catch((err) => {
