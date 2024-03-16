@@ -12,16 +12,15 @@ const express = require("express"),
   bodyParser = require("body-parser"),
   fs = require("fs"),
   path = require("path");
+const cors = require("cors");
+const accessLogStream = fs.createWriteStream(path.join(__dirname, "log.txt"), {
+  flags: "a",
+});
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
-const accessLogStream = fs.createWriteStream(path.join(__dirname, "log.txt"), {
-  flags: "a",
-});
-
-const cors = require("cors");
 app.use(cors());
 
 // let allowedOrigins = [
