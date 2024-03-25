@@ -57,3 +57,5 @@
 127.0.0.1 - - [22/Mar/2024:17:34:55 +0000] "GET /movies HTTP/1.1" 304 - "http://localhost:1234/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
 127.0.0.1 - - [22/Mar/2024:17:34:57 +0000] "GET /movies HTTP/1.1" 304 - "http://localhost:1234/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
 127.0.0.1 - - [22/Mar/2024:17:35:06 +0000] "GET /movies HTTP/1.1" 304 - "http://localhost:1234/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
+127.0.0.1 - - [22/Mar/2024:17:36:35 +0000] "GET /movies HTTP/1.1" 304 - "http://localhost:1234/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
+127.0.0.1 - - [22/Mar/2024:17:36:42 +0000] "GET /movies HTTP/1.1" 304 - "http://localhost:1234/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
