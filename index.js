@@ -148,11 +148,7 @@ app.put(
       { new: true }
     )
       .then((updatedUser) => {
-        // res.status(200).json(updatedUser);
-        // console.log(updatedUser);
-        if ("OPTIONS" == req.method) {
-          res.status(200).json(updatedUser);
-        }
+        res.status(200).json(updatedUser);
       })
       .catch((err) => {
         console.error(err);
